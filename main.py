@@ -43,12 +43,18 @@ except Exception as e:
 # Pydantic models
 class ThreadRequest(BaseModel):
     url: str
+    
+    class Config:
+        protected_namespaces = ()
 
 class SummaryResponse(BaseModel):
     success: bool
     summary: dict = None
     error: str = None
     processing_time: float = None
+    
+    class Config:
+        protected_namespaces = ()
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
