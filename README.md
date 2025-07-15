@@ -15,7 +15,7 @@ A powerful web application that extracts and summarizes Twitter/X threads into 5
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/DP17-Studios/Xthreads-Summarizer
 cd Xthread_summarizer
 ```
 
