@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadCraft - AI-Powered Thread Summarizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧵</text></svg>">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+            <div class="shape shape-6"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header with Particle Animation -->
+        <header class="header">
+            <div class="header-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-animation">
+                        <i class="fas fa-magic logo-icon"></i>
+                        <div class="sparkles">
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                        </div>
+                    </div>
+                    <h1 class="main-title">
+                        <span class="title-word" data-delay="0">Thread</span><span class="title-word gradient-text" data-delay="100">Craft</span>
+                    </h1>
+                </div>
+                <p class="subtitle">
+                    <span class="subtitle-text">Transform any Twitter thread into</span>
+                    <span class="highlight-text">5 insightful bullet points</span>
+                    <span class="subtitle-text">powered by AI</span>
+                </p>
+                <div class="feature-tags">
+                    <span class="tag"><i class="fas fa-bolt"></i>Lightning Fast</span>
+                    <span class="tag"><i class="fas fa-brain"></i>AI-Powered</span>
+                    <span class="tag"><i class="fas fa-shield-alt"></i>Privacy First</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section with Enhanced UI -->
+            <div class="input-section card-animation" data-delay="200">
+                <form id="thread-form" method="POST" action="/summarize">
+                    <div class="form-container">
+                        <div class="input-group">
+                            <div class="input-label">
+                                <i class="fas fa-link input-icon"></i>
+                                <span>Enter Thread URL</span>
+                                <div class="tooltip">
+                                    <i class="fas fa-question-circle"></i>
+                                    <div class="tooltip-content">
+                                        <p>Supports both twitter.com and x.com URLs</p>
+                                        <span>Example: https://twitter.com/user/status/123...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="input-wrapper">
+                                <div class="input-container">
+                                    <input 
+                                        type="url" 
+                                        id="url" 
+                                        name="url" 
+                                        placeholder="https://twitter.com/user/status/123456789..."
+                                        value="{{ url if url else '' }}"
+                                        required
+                                        class="url-input"
+                                        autocomplete="url"
+                                    >
+                                    <div class="input-line"></div>
+                                    <div class="input-focus"></div>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn magic-btn" id="submit-btn">
+                                    <div class="btn-content">
+                                        <div class="btn-icon">
+                                            <i class="fas fa-magic"></i>
+                                        </div>
+                                        <span class="btn-text">Summarize</span>
+                                        <div class="btn-ripple"></div>
+                                    </div>
+                                    <div class="btn-glow"></div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="url-validator">
+                            <div class="validator-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="validator-text">Valid Twitter/X URL detected</span>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Quick Examples -->
+                <div class="examples-section">
+                    <p class="examples-title">Try these examples:</p>
+                    <div class="example-urls">
+                        <button class="example-url" onclick="fillExample('https://twitter.com/elonmusk/status/1')">
+                            <i class="fab fa-twitter"></i>
+                            <span>Tech Thread</span>
+                        </button>
+                        <button class="example-url" onclick="fillExample('https://x.com/sama/status/2')">
+                            <i class="fas fa-brain"></i>
+                            <span>AI Discussion</span>
+                        </button>
+                        <button class="example-url" onclick="fillExample('https://twitter.com/naval/status/3')">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Philosophy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Loading State -->
+            <div id="loading" class="loading-section" style="display: none;">
+                <div class="loading-container">
+                    <div class="loading-visual">
+                        <div class="orbital-loader">
+                            <div class="orbit orbit-1">
+                                <div class="electron"></div>
+                            </div>
+                            <div class="orbit orbit-2">
+                                <div class="electron"></div>
+                            </div>
+                            <div class="orbit orbit-3">
+                                <div class="electron"></div>
+                            </div>
+                            <div class="nucleus"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="loading-text">
+                        <h3 class="processing-title">Processing Your Thread</h3>
+                        <div class="typing-animation">
+                            <span class="typing-text" id="typing-text">Analyzing content</span>
+                            <span class="cursor">|</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-pipeline">
+                        <div class="pipeline-step" data-step="1">
+                            <div class="step-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">Scraping</div>
+                                <div class="step-description">Extracting thread content</div>
+                            </div>
+                            <div class="step-progress"></div>
+                        </div>
+                        
+                        <div class="pipeline-step" data-step="2">
+                            <div class="step-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">Processing</div>
+                                <div class="step-description">AI analysis in progress</div>
+                            </div>
+                            <div class="step-progress"></div>
+                        </div>
+                        
+                        <div class="pipeline-step" data-step="3">
+                            <div class="step-icon">
+                                <i class="fas fa-list-ul"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">Summarizing</div>
+                                <div class="step-description">Generating key points</div>
+                            </div>
+                            <div class="step-progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Results Section -->
+            {% if result and result.success %}
+            <div class="results-section card-animation" data-delay="300">
+                <div class="result-header">
+                    <div class="header-main">
+                        <div class="result-icon">
+                            <i class="fas fa-magic"></i>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <div class="header-text">
+                            <h2 class="result-title">Thread Summary</h2>
+                            <p class="result-subtitle">AI-generated key insights</p>
+                        </div>
+                    </div>
+                    
+                    <div class="thread-metadata">
+                        <div class="metadata-item author-info">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="info">
+                                <span class="label">Author</span>
+                                <span class="value">@{{ result.summary.author }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metadata-item">
+                            <div class="icon-container">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="info">
+                                <span class="label">Tweets</span>
+                                <span class="value">{{ result.summary.tweet_count }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metadata-item">
+                            <div class="icon-container processing-time">
+                                <i class="fas fa-stopwatch"></i>
+                            </div>
+                            <div class="info">
+                                <span class="label">Processed in</span>
+                                <span class="value">{{ result.summary.processing_time_seconds }}s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-content">
+                    <div class="bullet-points-container">
+                        {% for point in result.summary.bullet_points %}
+                        <div class="bullet-point" data-index="{{ loop.index }}">
+                            <div class="point-number">
+                                <span>{{ loop.index }}</span>
+                                <div class="number-glow"></div>
+                            </div>
+                            <div class="point-content">
+                                <p class="point-text">{{ point }}</p>
+                                <div class="point-highlight"></div>
+                            </div>
+                            <div class="point-actions">
+                                <button class="micro-action" onclick="copyPoint({{ loop.index - 1 }})" title="Copy this point">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="micro-action" onclick="sharePoint({{ loop.index - 1 }})" title="Share this point">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="action-panel">
+                    <div class="primary-actions">
+                        <button class="action-btn primary-btn copy-all-btn" onclick="copyAllPoints()">
+                            <div class="btn-icon">
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <span>Copy Summary</span>
+                            <div class="btn-shine"></div>
+                        </button>
+                        
+                        <a href="{{ result.summary.original_url }}" target="_blank" class="action-btn secondary-btn">
+                            <div class="btn-icon">
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <span>View Original</span>
+                        </a>
+                    </div>
+                    
+                    <div class="secondary-actions">
+                        <button class="action-btn tertiary-btn" onclick="shareResults()">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </button>
+                        
+                        <button class="action-btn tertiary-btn" onclick="downloadSummary()">
+                            <i class="fas fa-download"></i>
+                            <span>Download</span>
+                        </button>
+                        
+                        <button class="action-btn tertiary-btn new-summary" onclick="resetForm()">
+                            <i class="fas fa-plus"></i>
+                            <span>New Summary</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Enhanced Error Section -->
+            {% if error %}
+            <div class="error-section card-animation" data-delay="300">
+                <div class="error-container">
+                    <div class="error-visual">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="error-pulse"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="error-content">
+                        <h3 class="error-title">Oops! Something went wrong</h3>
+                        <p class="error-message">{{ error }}</p>
+                        
+                        <div class="error-solutions">
+                            <h4>Let's try to fix this:</h4>
+                            <div class="solution-list">
+                                <div class="solution-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Ensure the URL is a valid Twitter/X thread link</span>
+                                </div>
+                                <div class="solution-item">
+                                    <i class="fas fa-lock-open"></i>
+                                    <span>Check that the thread is public and accessible</span>
+                                </div>
+                                <div class="solution-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Wait a moment and try again</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="error-actions">
+                            <button class="action-btn primary-btn" onclick="resetForm()">
+                                <i class="fas fa-redo"></i>
+                                <span>Try Again</span>
+                            </button>
+                            
+                            <button class="action-btn tertiary-btn" onclick="reportIssue()">
+                                <i class="fas fa-bug"></i>
+                                <span>Report Issue</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+
+        <!-- Enhanced Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-magic"></i>
+                        <span>ThreadCraft</span>
+                    </div>
+                    <p class="footer-description">AI-powered thread summarization</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Powered By</h4>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <i class="fas fa-spider"></i>
+                            <span>Firecrawl</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Mistral AI</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="/health" target="_blank" class="footer-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Status</span>
+                        </a>
+                        <a href="/api/providers" target="_blank" class="footer-link">
+                            <i class="fas fa-cog"></i>
+                            <span>API Info</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-pulse"></div>
+                <p>&copy; 2024 ThreadCraft. Made with ❤️ for the Twitter community.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Enhanced JavaScript -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
